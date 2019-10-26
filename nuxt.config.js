@@ -1,3 +1,5 @@
+const env = require("dotenv").config();
+
 module.exports = {
   /*
    ** Headers of the page
@@ -18,7 +20,12 @@ module.exports = {
   /*
    ** Build configuration
    */
-  css: ['@/assets/styles/variables'],
+  css: ['@/assets/styles/main'],
+  modules: ['@nuxtjs/style-resources'],
+  styleResources: {
+    scss: '@/assets/styles/settings.scss'
+  },
+  env: env.parsed,
   build: {
     /*
      ** Run ESLint on save
