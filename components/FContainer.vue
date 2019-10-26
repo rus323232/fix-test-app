@@ -21,7 +21,6 @@ export default {
   margin-right: auto;
   width: 100%;
   max-width: $cs-large;
-  padding: 0 10px;
   @include media-small-desktop {
     max-width: $cs-medium;
   }

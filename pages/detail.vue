@@ -7,6 +7,16 @@
 <script>
 
 export default {
+  // async data ({ params }) {
+  //   // загрузит статью из API
+  //   let { data } = await axios.get(`https://my-api/posts/${params.id}`)
+  //   return { title: data.title }
+  // },
+  // head () {
+  //   return {
+  //     title: this.title
+  //   }
+  // },
   components: {
 
   }

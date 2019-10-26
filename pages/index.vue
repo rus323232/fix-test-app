@@ -1,18 +1,49 @@
 <template>
-  <f-container tag="section">
-    <f-tabs />
-  </f-container>
+  <section class="main-page">
+    <f-tabs :items="filterItems" @click="onFilterChange" />
+    <f-container>
+      ss
+    </f-container>
+  </section>
 </template>
 
 <script>
-import FContainer from '@/components/FContainer'
-import FTabs from '@/components/FTabs'
+import { createNamespacedHelpers } from 'vuex';
+
+import FTabs from '@/components/FTabs';
+import FContainer from '@/components/FContainer';
+import { ARTICLE_TYPES as articleTypes, STORE_MODULES } from '@/constants';
+
+const { mapMutations, mapState } = createNamespacedHelpers(STORE_MODULES.articles);
 
 export default {
   components: {
     FTabs,
-    FContainer
-  }
-}
+    FContainer,
+  },
+  head() {
+    return {
+      title: 'Главная страница',
+    };
+  },
+  data: () => ({
+    filterItems: [
+      {
+        id: 'all',
+        title: 'Все',
+      },
+      ...articleTypes.map(({ title, value }) => ({
+        title,
+        id: value,
+      })),
+    ],
+    ...mapState({
+      atriclesList: ({ list }) => list,
+      isFetching: ({ isFetching }) => isFetching,
+    })
+  }),
+  methods: {
+    onFilterChange() {},
+  },
+};
 </script>
-

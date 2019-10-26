@@ -1,3 +1,5 @@
+const env = require("dotenv").config();
+
 module.exports = {
   /*
    ** Headers of the page
@@ -23,6 +25,7 @@ module.exports = {
   styleResources: {
     scss: '@/assets/styles/settings.scss'
   },
+  env: env.parsed,
   build: {
     /*
      ** Run ESLint on save
