@@ -1,0 +1,42 @@
+@import 'fonts';
+@import 'variables';
+
+html,
+body {
+  font-family: $ff-regular;
+  font-size: 16px;
+  color: $c-primary;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+a {
+  color: $c-secondary;
+  &:hover {
+    color: $c-blue;
+    text-decoration: underline;
+  }
+  &:visited {
+    color: $c-blue;
+  }
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: $ff-bold;
+  color: $c-primary;
+}
+
+h1 {
+  font-size: $fs-biggest;
+}
+
+h3 {
+  font-size: $fs-big;
+}

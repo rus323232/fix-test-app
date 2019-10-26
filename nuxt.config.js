@@ -18,7 +18,11 @@ module.exports = {
   /*
    ** Build configuration
    */
-  css: ['@/assets/styles/variables'],
+  css: ['@/assets/styles/main'],
+  modules: ['@nuxtjs/style-resources'],
+  styleResources: {
+    scss: '@/assets/styles/settings.scss'
+  },
   build: {
     /*
      ** Run ESLint on save
