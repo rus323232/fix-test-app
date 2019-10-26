@@ -1,6 +1,6 @@
 <template>
   <section class="main-page">
-    <f-tabs :items="filterItems" @click="onFilterChange" />
+    <f-tabs :items="filterItems" @change="onFilterChange" />
     <f-container>
       ss
     </f-container>
@@ -14,7 +14,7 @@ import FTabs from '@/components/FTabs';
 import FContainer from '@/components/FContainer';
 import { ARTICLE_TYPES as articleTypes, STORE_MODULES } from '@/constants';
 
-const { mapMutations, mapState } = createNamespacedHelpers(STORE_MODULES.articles);
+const { mapActions, mapState } = createNamespacedHelpers(STORE_MODULES.articles);
 
 export default {
   components: {
@@ -29,7 +29,7 @@ export default {
   data: () => ({
     filterItems: [
       {
-        id: 'all',
+        id: null,
         title: 'Все',
       },
       ...articleTypes.map(({ title, value }) => ({
@@ -43,7 +43,14 @@ export default {
     })
   }),
   methods: {
-    onFilterChange() {},
+    ...mapActions([
+      'fetchByType',
+    ]),
+    onFilterChange({ id: type }) {
+      this.fetchByType({
+        type,
+      });
+    },
   },
 };
 </script>
