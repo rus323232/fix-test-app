@@ -96,6 +96,7 @@ export default {
     height: 100%;
     justify-content: flex-start;
     padding: 17px 21px;
+    overflow: hidden;
   }
   &__image {
     display: inline-block;
@@ -111,7 +112,6 @@ export default {
     margin: 0 0 10px 0;
   }
   &__main {
-    flex: 1;
     overflow: hidden;
   }
   &__top,
