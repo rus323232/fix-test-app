@@ -74,7 +74,6 @@ export default {
   @include flex-col;
   box-sizing: border-box;
   justify-content: flex-start;
-  margin: 0;
   width: 100%;
   max-width: 336px;
   height: 407px;
