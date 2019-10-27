@@ -76,6 +76,11 @@ export default {
     text-align: center;
     margin-bottom: 20px;
     min-height: 320px;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  &__img {
+    object-fit: cover;
   }
   &__info {
     @include flex-row;

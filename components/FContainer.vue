@@ -22,8 +22,10 @@ export default {
   margin-right: auto;
   width: 100%;
   max-width: $cs-large;
+  box-sizing: border-box;
   @include media-small-desktop {
     max-width: $cs-medium;
+    padding: 0 10px;
   }
   @include media-phone {
     max-width: $cs-small;
