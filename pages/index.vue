@@ -17,7 +17,8 @@
         />
       </f-cards-container>
       <div v-if="isArticlesNotOver" class="main-page__show-more">
-        <a href="#" @click.prevent="fetchMore">
+        <scale-loader v-if="isFetching" color="#5896fe" />
+        <a v-else href="#" @click.prevent="fetchMore">
           Загрузить еще
         </a>
       </div>
@@ -27,6 +28,7 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex';
+import ScaleLoader from 'vue-spinner/src/ScaleLoader.vue';
 
 import FTabs from '@/components/FTabs';
 import FContainer from '@/components/FContainer';
@@ -44,6 +46,7 @@ export default {
   components: {
     FTabs,
     FContainer,
+    ScaleLoader,
     FArticleCard,
     FCardsContainer,
     FCardsPlaceholder,
@@ -71,6 +74,8 @@ export default {
   methods: {
     ...mapActions(['fetchMore', 'fetchByType']),
     onFilterChange({ id: type }) {
+      if (this.currentFilterType === type) return;
+
       this.fetchByType({
         type,
       });
@@ -79,6 +84,7 @@ export default {
   computed: {
     ...mapState({
       articlesList: ({ list }) => list,
+      currentFilterType: ({ type }) => type,
       isFetching: ({ isFetching }) => isFetching,
       isArticlesNotOver: ({ isArticlesOver }) => !isArticlesOver,
     }),
@@ -89,6 +95,7 @@ export default {
 
 <style lang="scss" scoped>
 .main-page {
+  padding-bottom: 80px;
   &__header {
     margin-bottom: 32px;
   }
@@ -101,6 +108,26 @@ export default {
     text-align: center;
     width: 100%;
     justify-self: center;
+  }
+  &__cards-container {
+    margin-left: -31px;
+    @include media-small-desktop {
+      margin-left: 0;
+      &:after {
+        content: '';
+        width: 100%;
+        max-width: 336px;
+        display: block;
+        height: 1px;
+      }
+    }
+  }
+  &__card {
+    margin-left: 27px;
+    margin-bottom: 27px;
+    @include media-small-desktop {
+      margin-left: 0;
+    }
   }
 }
 </style>

@@ -3,14 +3,17 @@ $c-primary: #333333;
 $c-secondary: #4460c9;
 
 $c-blue: #5896fe;
+$c-blue-light: #E1EAFE;
 $c-green: #61d135;
+$c-green-light: #EAFEE1;
 $c-grey: #757575;
 $c-red: #fd6c6f;
+$c-red-light: #FEE1E1;
 $c-light-grey: #e8e8e8;
 
 // container size
 $cs-large: 1142px;
-$cs-medium: 640px;
+$cs-medium: 1024px;
 $cs-small: 480px;
 
 // font family
@@ -26,6 +29,6 @@ $fs-biggest: 2rem;
 
 // breakpoints
 $bp-desktop: 1280px;
-$bp-small-desktop: 1024px;
+$bp-small-desktop: 1145px;
 $bp-tablet: 780px;
 $bp-phone: 480px;

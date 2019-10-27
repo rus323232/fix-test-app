@@ -10,18 +10,17 @@ export const CLEAR_ARTICLES = 'CLEAR_ARTICLES';
 export const UPDATE_ARTICLES = 'UPDATE_ARTICLES';
 export const SET_IS_OVER_STATUS = 'SET_IS_OVER_STATUS';
 
-
 const getUriByType = type => {
   const uriMap = {
-    'stock': 'stocks',
-    'blog': 'blogs',
-    'news': 'news',
+    stock: 'stocks',
+    blog: 'blogs',
+    news: 'news',
   };
   return Boolean(type) ? uriMap[type] : 'articles';
 };
 
 /**
- * Функция заменяет в рандомном порядке целые числа в типах статьи на читаемые строковые значения
+ * Функция заменяет в рандомном порядке целые числа в типах статьи, на читаемые строковые значения
  * так как mock сервер не дает возможности генерировать выборку из набора строковых значений
  * */
 const getArticlesWithTypes = articles =>
@@ -80,7 +79,7 @@ export const mutations = {
 };
 
 export const actions = {
-  async fetchList({ commit, state }) {
+  async fetchList({ commit, state }, payload) {
     try {
       commit(FETCH_START);
 
@@ -107,6 +106,18 @@ export const actions = {
       throw new Error(e);
     } finally {
       commit(FETCH_END);
+    }
+  },
+  async fetchDetail({ commit, state }, { id }) {
+    try {
+      const { type } = state;
+      const uri = `${getUriByType(type)}/${id}`;
+      const { data } = await http.get(uri);
+
+      return data;
+    } catch (e) {
+      console.error('fetchDetail action', e);
+      throw new Error(e);
     }
   },
   async fetchByType({ commit, dispatch }, payload = {}) {

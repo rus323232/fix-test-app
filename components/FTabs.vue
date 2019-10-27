@@ -37,17 +37,17 @@ export default {
     initialTabIndex: {
       type: Number,
       default: 0,
-    }
+    },
   },
   data() {
     return {
       activeTabIndex: this.initialTabIndex,
-    }
+    };
   },
   methods: {
     onTabClick(item, index) {
       this.activeTabIndex = index;
-      this.$emit('change', item)
+      this.$emit('change', item);
     },
   },
 };
@@ -77,6 +77,9 @@ export default {
     padding: 20px 25px;
     border-bottom: 4px transparent solid;
     cursor: pointer;
+    @include media-phone {
+      padding: 20px 19px;
+    }
   }
   &__item--active {
     color: $c-grey;

@@ -37,7 +37,7 @@ export const formatDate = date => {
   return `${dd}.${mm}.${yyyy}`;
 };
 
-export const spliceByBits = value =>
+export const splitByBits = value =>
   `${value}`
     .replace(/[^0-9]+/g, '')
     .replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');

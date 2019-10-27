@@ -27,11 +27,16 @@ module.exports = {
   },
   env: env.parsed,
   plugins: [
-    { src: '@/plugins/vue-notification', mode: 'client' },
     { src: '@/plugins/vue-content-placeholders' },
+    { src: '@/plugins/vue-notification', mode: 'client' },
   ],
   build: {
-    vendor: ['vue-notification', 'axios', 'vue-content-placeholders'],
+    vendor: [
+      'axios',
+      'vue-spinner',
+      'vue-notification',
+      'vue-content-placeholders',
+    ],
     /*
      ** Run ESLint on save
      */

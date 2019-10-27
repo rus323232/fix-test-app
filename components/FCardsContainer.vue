@@ -14,5 +14,9 @@ export default {
 .cards-container {
   @include flex-row-wrap;
   padding: 0 40px;
+  @include media-small-desktop {
+    justify-content: space-evenly;
+    padding: 0 20px;
+  }
 }
 </style>
