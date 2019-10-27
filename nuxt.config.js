@@ -26,9 +26,12 @@ module.exports = {
     scss: '@/assets/styles/settings.scss',
   },
   env: env.parsed,
-  plugins: [{ src: '@/plugins/vue-notification', mode: 'client' }],
+  plugins: [
+    { src: '@/plugins/vue-notification', mode: 'client' },
+    { src: '@/plugins/vue-content-placeholders' },
+  ],
   build: {
-    vendor: ['vue-notification', 'axios'],
+    vendor: ['vue-notification', 'axios', 'vue-content-placeholders'],
     /*
      ** Run ESLint on save
      */

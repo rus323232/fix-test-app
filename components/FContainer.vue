@@ -6,6 +6,7 @@
 
 <script>
 export default {
+  name: 'FContainer',
   props: {
     tag: {
       type: String,

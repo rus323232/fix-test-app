@@ -1,14 +1,47 @@
-import { http } from '@/modules/http';
+import { http } from '@/utils';
+import { ARTICLE_TYPES } from '@/constants';
 
 export const SET_TYPE = 'SET_TYPE';
 export const FETCH_END = 'FETCH_END';
 export const FETCH_START = 'FETCH_START';
 export const INCREMENT_PAGE = 'INCREMENT_PAGE';
 export const SET_FIRST_PAGE = 'SET_FIRST_PAGE';
+export const CLEAR_ARTICLES = 'CLEAR_ARTICLES';
 export const UPDATE_ARTICLES = 'UPDATE_ARTICLES';
+export const SET_IS_OVER_STATUS = 'SET_IS_OVER_STATUS';
 
-const filterByType = (currentType, articles) =>
-  articles.filter(({ type }) => type === currentType);
+
+const getUriByType = type => {
+  const uriMap = {
+    'stock': 'stocks',
+    'blog': 'blogs',
+    'news': 'news',
+  };
+  return Boolean(type) ? uriMap[type] : 'articles';
+};
+
+/**
+ * Функция заменяет в рандомном порядке целые числа в типах статьи на читаемые строковые значения
+ * так как mock сервер не дает возможности генерировать выборку из набора строковых значений
+ * */
+const getArticlesWithTypes = articles =>
+  articles.map(article => {
+    const typeInt = parseInt(article.type, 10);
+
+    if (isNaN(typeInt)) return article;
+
+    const remainder = typeInt % 10;
+
+    return {
+      ...article,
+      type:
+        remainder < 3
+          ? ARTICLE_TYPES.blog.value
+          : remainder < 6
+          ? ARTICLE_TYPES.news.value
+          : ARTICLE_TYPES.stock.value,
+    };
+  });
 
 export const state = () => ({
   list: [],
@@ -16,12 +49,10 @@ export const state = () => ({
   type: null,
   currentPage: 1,
   isFetching: false,
+  isArticlesOver: false,
 });
 
 export const mutations = {
-  [UPDATE_ARTICLES](state, newArticlesList) {
-    state.list = newArticlesList;
-  },
   [INCREMENT_PAGE](state) {
     state.currentPage += 1;
   },
@@ -37,6 +68,15 @@ export const mutations = {
   [FETCH_END](state) {
     state.isFetching = false;
   },
+  [CLEAR_ARTICLES](state) {
+    state.list = [];
+  },
+  [UPDATE_ARTICLES](state, newArticlesList) {
+    state.list = newArticlesList;
+  },
+  [SET_IS_OVER_STATUS](state, status = false) {
+    state.isArticlesOver = status;
+  },
 };
 
 export const actions = {
@@ -44,37 +84,55 @@ export const actions = {
     try {
       commit(FETCH_START);
 
-      const { page, limit, type } = state;
-      const { data } = await http.get('articles', {
+      const { currentPage: page, limit, type } = state;
+      const uri = getUriByType(type);
+      const { data } = await http.get(uri, {
         params: {
           page,
           limit,
         },
       });
 
-      if (!data || !data.length) return [];
+      if (!Array.isArray(data)) return [];
 
-      if (!type) {
-        commit(UPDATE_ARTICLES, data);
-        return;
+      const dataWithReadableTypes = getArticlesWithTypes(data);
+
+      if (data.length < limit) {
+        commit(SET_IS_OVER_STATUS, true);
       }
 
-      commit(UPDATE_ARTICLES, filterByType(type, data));
+      return dataWithReadableTypes;
     } catch (e) {
       console.error('fetchList action', e);
+      throw new Error(e);
     } finally {
       commit(FETCH_END);
     }
   },
-  async fetchByType({ commit, dispatch }, payload) {
+  async fetchByType({ commit, dispatch }, payload = {}) {
     const { type = null } = payload;
 
+    commit(SET_IS_OVER_STATUS, false);
+    commit(CLEAR_ARTICLES);
     commit(SET_FIRST_PAGE);
     commit(SET_TYPE, type);
-    dispatch('fetchList');
+
+    const articles = await dispatch('fetchList');
+
+    commit(UPDATE_ARTICLES, articles);
   },
-  async fetchMore({ commit, dispatch }) {
+  async fetchMore({ commit, dispatch, state }) {
+    if (state.isArticlesOver) return;
+
     commit(INCREMENT_PAGE);
-    dispatch('fetchList');
+
+    const articles = await dispatch('fetchList');
+
+    commit(UPDATE_ARTICLES, [...state.list, ...articles]);
   },
+};
+
+export const getters = {
+  isNewListEmpty: ({ isFetching, list }) => !isFetching && list.length === 0,
+  isNewListFetching: ({ isFetching, list }) => isFetching && list.length === 0,
 };
